@@ -1,0 +1,18 @@
+project:
+  type: website
+
+website:
+  title: "Individual Homework3"
+  navbar:
+    right:
+      - about.qmd
+      - icon: github
+        href: https://github.com/tongtong24x/Individual-Homework3.git
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+
+editor: visual
+

@@ -1,0 +1,31 @@
+[
+  {
+    "listing": "/index.html",
+    "items": [
+      "/posts/Life Expectancy Averaged.html",
+      "/posts/Customer Shopping Trends Analysis.html"
+    ]
+  },
+  {
+    "listing": "/Life Expectancy Averaged.html",
+    "items": [
+      "/posts/post-with-code/index.html",
+      "/posts/welcome/index.html"
+    ]
+  },
+  {
+    "listing": "/Customer Shopping Trends Analysis.html",
+    "items": [
+      "/posts/post-with-code/index.html",
+      "/posts/welcome/index.html"
+    ]
+  },
+  {
+    "listing": "/posts/Life Expectancy Averaged.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/Customer Shopping Trends Analysis.html",
+    "items": []
+  }
+]

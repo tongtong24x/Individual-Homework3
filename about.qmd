@@ -1,0 +1,6 @@
+---
+title: "About_me"
+Author: Tongtong Gu
+---
+
+"Hi! I'm Tongtong Gu, a junior at the University of Illinois Urbana-Champaign, where I major in Statistics and Information Science. When I'm not immersed in data and analytics, I enjoy listening to K-pop and spending time with my Siberian cat, Lulu, who always keeps me entertained. My academic journey reflects my passion for understanding the stories behind data, and I'm always eager to explore new insights. Thanks for visiting my page!"

@@ -1,0 +1,95 @@
+---
+title: "Customer Shopping Trends Analysis"
+author: Tongtong Gu
+listing:
+  contents: posts
+  sort: "date desc"
+  type: default
+  categories: true
+  sort-ui: false
+  filter-ui: false
+page-layout: full
+title-block-banner: true
+format:
+  html:
+    toc: true
+    number-sections: true
+---
+
+### *Exploratory Data Analysis*
+
+Dataset Source
+
+The dataset used for this analysis is the Customer Shopping (Latest Trends) Dataset, available on Kaggle. It provides valuable insights into customer shopping habits, including demographic details, purchase behaviors, and product trends.
+
+Source: Customer Shopping (Latest Trends) Dataset(https://www.kaggle.com/datasets/bhadramohit/customer-shopping-latest-trends-dataset)
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(caret)
+
+dataset <- read.csv("shopping_trends.csv")
+
+str(dataset)
+summary(dataset)
+head(dataset)
+```
+
+The bar plot below illustrates the distribution of product categories purchased by customers. Clothing dominates as the most popular category, followed by Accessories, Footwear, and Outerwear. This suggests that clothing is a primary focus area for customer demand. However, outerwear shows significantly lower engagement, highlighting an opportunity for targeted promotions or campaigns to boost sales in this category.
+
+```{r}
+# Bar plot
+ggplot(dataset, aes(x = Category)) +
+  geom_bar(fill = "skyblue") +
+  theme_minimal() +
+  labs(title = "Distribution of Categories", x = "Category", y = "Count")
+```
+
+### *Predictive Analysis*
+
+Objective: A linear regression model was constructed to predict the Purchase_Amount using Age and Review_Rating. These variables were chosen based on their potential influence on customer purchasing behavior.
+
+```{r}
+#Predictive Analysis:Linear regression
+dataset <- dataset %>%
+  rename(Purchase_Amount = Purchase.Amount..USD.)  # Simplify column name
+
+dataset <- dataset %>%
+  filter(!is.na(Purchase_Amount) & Purchase_Amount > 0)
+
+set.seed(123)
+training_index <- createDataPartition(dataset$Purchase_Amount, p = 0.8, list = FALSE)
+training_set <- dataset[training_index, ]
+test_set <- dataset[-training_index, ]
+
+model <- lm(Purchase_Amount ~ Age + Review.Rating, data = training_set)
+summary(model)
+
+test_set$Predicted_Purchase <- predict(model, test_set)
+
+rmse <- sqrt(mean((test_set$Purchase_Amount - test_set$Predicted_Purchase)^2))
+print(paste("RMSE:", rmse))
+```
+
+The regression analysis reveals the following:
+
+The intercept estimate of 57.78 suggests that the baseline average purchase amount is approximately \$57.78 when other variables are at their reference levels. Age has a small, non-significant negative coefficient (-0.029), implying minimal impact on spending behavior. Review_Rating has a positive but non-significant effect (coefficient = 0.88). This suggests that higher ratings may correlate with slightly higher purchases, but the relationship is weak. The model’s Adjusted R-squared value is 0.0004, indicating that only a negligible portion of the variance in purchase amounts is explained by Age and Review_Rating. Additionally, the residual standard error (RSE) of 23.69 and the RMSE of \~23.65 highlight significant prediction errors, which are substantial relative to the purchase amount range (\$20–\$100).
+
+### *Visualization: Actual vs Predicted*
+
+The scatter plot below compares the actual and predicted purchase amounts. The wide scatter around the ideal prediction line (red dashed) reflects poor alignment between predicted and actual values, reinforcing the model's low predictive power. This suggests that Age and Review_Rating are insufficient predictors of Purchase_Amount.
+
+```{r}
+#Visualization: Predicted vs Actual Spend
+ggplot(test_set, aes(x = Purchase_Amount, y = Predicted_Purchase)) +
+  geom_point(color = "blue") +
+  geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "red") +
+  theme_minimal() +
+  labs(title = "Actual vs Predicted Purchase Amount", x = "Actual Amount", y = "Predicted Amount")
+
+```
+
+### *Conclusion*
+
+This analysis highlights key trends in customer shopping behavior and identifies opportunities to enhance predictive accuracy. While the current model does not perform well, incorporating additional variables and exploring alternative modeling techniques could significantly improve the insights derived from this dataset.
